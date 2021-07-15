@@ -1,4 +1,4 @@
-@if (session('status') === 'verification-link-sent')
+@if(session('status') === 'verification-link-sent')
     @php
         alert()->html(__('Success'), __('A new verification link has been sent to the email address you provided during registration.'), 'success')->showConfirmButton()
     @endphp
@@ -7,9 +7,9 @@
 @section('content')
     {{-- Todo: remove this component call if your app is not multilingual --}}
     @include('components.common.multilingual.lang-switcher', [
-        'containerClasses' => ['text-right', 'mb-3'],
+        'containerClasses' => ['text-end', 'mb-3'],
         'dropdownLabelClasses' => ['btn', 'btn-link'],
-        'dropdownMenuClasses' => ['dropdown-menu-right']
+        'dropdownMenuClasses' => ['dropdown-menu-end']
     ])
     <div class="mx-auto mb-4">
         {{ settings()->getFirstMedia('logo_squared')->img('auth', ['alt' => config('app.name')]) }}
@@ -27,8 +27,10 @@
     <p>
         {{ __('If you didn\'t receive the email, we will gladly send you another.') }}
     </p>
-    <form method="POST" action="{{ route('verification.send') }}" novalidate>
-        @csrf
-        {{ submit()->prepend('<i class="fas fa-paper-plane fa-fw"></i>')->label(__('Resend Verification Email')) }}
-    </form>
+    <x-form::form method="POST" :action="route('verification.send')">
+        <x-form::button.submit>
+            <i class="fas fa-paper-plane fa-fw"></i>
+            {{ __('Resend Verification Email') }}
+        </x-form::button.submit>
+    </x-form::form>
 @endsection

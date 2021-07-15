@@ -3,6 +3,7 @@
 namespace App\Tables;
 
 use App\Models\Brickables\CarouselBrickSlide;
+use App\View\Components\Admin\Media\Thumb;
 use Illuminate\Database\Eloquent\Builder;
 use Okipa\LaravelBrickables\Models\Brick;
 use Okipa\LaravelTable\Abstracts\AbstractTable;
@@ -72,10 +73,9 @@ class CarouselBrickSlidesTables extends AbstractTable
     protected function columns(Table $table): void
     {
         $table->column('id');
-        $table->column('thumb')->html(fn(CarouselBrickSlide $slide) => view(
-            'components.admin.media.thumb',
-            ['image' => $slide->getFirstMedia('images')]
-        ));
+        $table->column('thumb')->html(fn(CarouselBrickSlide $slide) => app(Thumb::class)->render()->with([
+            'media' => $slide->getFirstMedia('images'),
+        ]));
         $table->column('label')->stringLimit(25)->value(fn(CarouselBrickSlide $slide) => $slide->label);
         $table->column('position')->html(fn(CarouselBrickSlide $slide) => '<span class="d-none id">'
             . $slide->id . '</span>'

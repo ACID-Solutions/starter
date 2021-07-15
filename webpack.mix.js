@@ -58,10 +58,9 @@ mix
         cssNano: {discardComments: {removeAll: true}}
     })
     .autoload({
-        jquery: ['$', 'jQuery', 'window.jQuery'],
-        'popper.js': ['Popper', 'window.Popper']
+        '@popperjs/core': ['Popper', 'window.Popper']
     })
-    .extract(['bootstrap', 'jquery', 'popper.js'])
+    .extract(['@popperjs/core'])
     .sourceMaps()
     .version([
         'public/images/',

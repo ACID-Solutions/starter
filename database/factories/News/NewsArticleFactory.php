@@ -6,10 +6,7 @@ use App\Models\News\NewsArticle;
 use App\Models\News\NewsCategory;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-
-// Todo: update this factory if your app is not multilingual.
 
 class NewsArticleFactory extends Factory
 {

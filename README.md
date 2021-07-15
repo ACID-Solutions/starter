@@ -1,8 +1,15 @@
 <!-- ToDo: Search every `ToDo:` occurrence in starter and customize what needs to be -->
 <!-- ToDo: Remove .github directory once the project has been cloned -->
-<!-- ToDo: Remove `spatie/laravel-translatable` package if your app is not multilingual -->
-<!-- ToDo: Remove `codezero/laravel-localized-routes` package if your app is not multilingual -->
-<!-- ToDo: Remove `codezero/laravel-unique-translation` package if your app is not multilingual -->
+<!-- ToDo: Execute the following actions if your app is not multilingual -->
+<!-- * Remove `spatie/laravel-translatable` package -->
+<!-- * Remove `codezero/laravel-localized-routes` package -->
+<!-- * Remove `codezero/laravel-unique-translation` -->
+<!-- * Remove every `:locales` attributes on blade views -->
+<!-- * Replace uses of `currentRouteIs` by `Route::is` -->
+<!-- * Replace uses of `translatedData` by `data_get` -->
+<!-- * Replace uses of `UniqueTranslationRule` by `Unique` -->
+<!-- * Remove multilingual handling in factories -->
+
 # Web app prebuilt base on Laravel 8, PHP 8.0 and MySQL 8.0
 
 <!-- ToDo: replace by project badges -->

@@ -47,7 +47,7 @@ class NewsCategoriesController extends Controller
             ->with('toast_success', __('crud.parent.created', [
                 'parent' => __('News'),
                 'entity' => __('Categories'),
-                'name' => $category->name,
+                'name' => $category->title,
             ]));
     }
 
@@ -56,7 +56,7 @@ class NewsCategoriesController extends Controller
         SEOTools::setTitle(__('breadcrumbs.parent.edit', [
             'parent' => __('News'),
             'entity' => __('Categories'),
-            'detail' => $category->name,
+            'detail' => $category->title,
         ]));
 
         return view('templates.admin.news.categories.edit', compact('category'));
@@ -69,7 +69,7 @@ class NewsCategoriesController extends Controller
         return back()->with('toast_success', __('crud.parent.updated', [
             'parent' => __('News'),
             'entity' => __('Categories'),
-            'name' => $category->name,
+            'name' => $category->title,
         ]));
     }
 
@@ -86,7 +86,7 @@ class NewsCategoriesController extends Controller
         return back()->with('toast_success', __('crud.parent.destroyed', [
             'parent' => __('News'),
             'entity' => __('Categories'),
-            'name' => $category->name,
+            'name' => $category->title,
         ]));
     }
 }

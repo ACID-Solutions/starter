@@ -12,11 +12,9 @@ use Okipa\LaravelTable\Table;
 
 class CookieServicesTable extends AbstractTable
 {
-    protected CookieServicesIndexRequest $request;
-
-    public function __construct(CookieServicesIndexRequest $request)
+    public function __construct(protected CookieServicesIndexRequest $request)
     {
-        $this->request = $request;
+        //
     }
 
     /**

@@ -1,18 +1,23 @@
 @extends('laravel-brickables::admin.form.layout')
-@section('inputs')
-    {{ textarea()->name('text_left')
-        // Todo: remove the line below if your app is not multilingual.
-        ->locales(supportedLocaleKeys())
-        ->prepend(null)
-        // ToDo: remove localization if your app is not multilingual.
-        ->value(fn($locale) => translatedData($brick, 'data.text_left', $locale))
-        ->componentHtmlAttributes(['required', 'data-editor']) }}
-    @php($image = optional($brick)->getFirstMedia('images'))
-    {{ inputFile()->name('image_right')
-        ->value(optional($image)->file_name)
-        ->uploadedFile(fn() => view('components.admin.media.thumb', ['image' => $image]))
-        ->showRemoveCheckbox(false)
-        ->caption($brickable->getBrickModel()->getMediaCaption('images'))
-        ->componentHtmlAttributes(['required']) }}
-    {{ inputSwitch()->name('invert_order')->checked((bool) data_get($brick, 'data.invert_order')) }}
+@section('form_body')
+    <x-common.forms.notice class="mt-3"/>
+    <div class="row mb-n3" data-masonry>
+        @bind($brick->data)
+            <div class="col-xl-6 mb-3">
+                <x-admin.forms.card title="{{ __('Content') }}">
+                    <x-form::textarea name="text_left" :locales="supportedLocaleKeys()" data-editor required/>
+                    <x-admin.media.thumb :media="$brick?->getFirstMedia('images')"/>
+                    <x-form::input type="file"
+                                   name="image_right"
+                                   :caption="$brickable->getBrickModel()->getMediaCaption('images')"
+                                   required/>
+                </x-admin.forms.card>
+            </div>
+            <div class="col-xl-6 mb-3">
+                <x-admin.forms.card title="{{ __('Configuration') }}">
+                    <x-form::toggle-switch name="invert_order"/>
+                </x-admin.forms.card>
+            </div>
+        @endbind()
+    </div>
 @endsection

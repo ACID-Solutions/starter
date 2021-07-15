@@ -5,20 +5,16 @@
         {{ __('breadcrumbs.orphan.edit', ['entity' => __('Home'), 'detail' => __('Page')]) }}
     </h1>
     <hr>
-    <form method="POST"
-          action="{{ route('home.page.update') }}"
-          enctype="multipart/form-data"
-          novalidate>
-        @csrf
-        @method('PUT')
+    <x-form::form method="PUT" :action="route('home.page.update')" enctype="multipart/form-data">
         <div class="d-flex">
-            {{ submitUpdate() }}
-            {{ buttonLink()->route('home.page.show')
-                ->prepend('<i class="fas fa-external-link-square-alt fa-fw"></i>')
-                ->label(__('Display'))
-                ->componentClasses(['btn-success'])
-                ->componentHtmlAttributes(['target' => '_blank'])
-                ->containerClasses(['ml-3']) }}
+            <x-form::button.submit>
+                <i class="fas fa-save fa-fw"></i>
+                {{ __('Save') }}
+            </x-form::button.submit>
+            <x-form::button.link class="btn-success ms-3" :href="route('home.page.show')" target="_blank">
+                <i class="fas fa-external-link-square-alt fa-fw"></i>
+                {{ __('Display') }}
+            </x-form::button.link>
         </div>
         <x-common.forms.notice class="mt-3"/>
         <div class="row mb-n3" data-masonry>
@@ -26,7 +22,7 @@
                 <x-admin.forms.seo-meta-card :model="$pageContent"/>
             </div>
         </div>
-    </form>
+    </x-form::form>
     <hr>
     @if($pageContent)
         {!! $pageContent->displayAdminPanel() !!}

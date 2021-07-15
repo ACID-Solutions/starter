@@ -6,8 +6,6 @@ use App\Models\Cookies\CookieCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-// Todo: update this factory if your app is not multilingual.
-
 class CookieCategoryFactory extends Factory
 {
     /** @var string */

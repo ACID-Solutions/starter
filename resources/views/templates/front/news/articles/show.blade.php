@@ -33,7 +33,7 @@
                     @endforeach
                 @endif
             </div>
-            <div class="col-sm-6 mt-3 mt-sm-0 text-sm-right">
+            <div class="col-sm-6 mt-3 mt-sm-0 text-sm-end">
                 <span class="fa-stack text-primary">
                     <a href="https://twitter.com/home?status={{ request()->url() }}"
                        title="{{ __('Share on :name', ['name' => 'Twitter']) }}"

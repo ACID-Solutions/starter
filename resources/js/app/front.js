@@ -1,4 +1,4 @@
-import Bootstrap from '../vendor/Bootstrap';
+import BootstrapTooltips from '../vendor/BootstrapTooltips';
 import Klaro from '../vendor/Klaro';
 
 // Scripts that will be used globally on the front.
@@ -7,5 +7,5 @@ import Klaro from '../vendor/Klaro';
 require('./common');
 
 // Vendor
-Bootstrap.tooltips();
+BootstrapTooltips.init();
 Klaro.init();

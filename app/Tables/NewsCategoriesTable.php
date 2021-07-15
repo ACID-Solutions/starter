@@ -28,7 +28,7 @@ class NewsCategoriesTable extends AbstractTable
                     'data-confirm' => __('crud.parent.destroy_confirm', [
                         'parent' => __('News'),
                         'entity' => __('Categories'),
-                        'name' => $category->name,
+                        'name' => $category->title,
                     ]),
                 ];
             });
@@ -44,7 +44,7 @@ class NewsCategoriesTable extends AbstractTable
     protected function columns(Table $table): void
     {
         $table->column('id')->sortable();
-        $table->column('name')->stringLimit(25)->sortable()->searchable();
+        $table->column('title')->stringLimit(25)->sortable()->searchable();
         $table->column('created_at')->dateTimeFormat('d/m/Y H:i')->sortable();
         $table->column('updated_at')->dateTimeFormat('d/m/Y H:i')->sortable(true);
     }

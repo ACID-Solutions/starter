@@ -21,8 +21,8 @@
         "laravel/horizon": "^5.0",
         "laravel/telescope": "^4.0",
         "laravel/tinker": "^2.5",
-        "okipa/laravel-bootstrap-components": "^5.0",
         "okipa/laravel-brickables": "^2.1",
+        "okipa/laravel-form-components": "dev-main",
         "okipa/laravel-medialibrary-ext": "^9.0",
         "okipa/laravel-stuck-jobs-notifier": "^2.0",
         "okipa/laravel-supervisor-downtime-notifier": "^2.0",
@@ -40,7 +40,6 @@
         "spatie/pdf-to-image": "^2.1"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
         "barryvdh/laravel-ide-helper": "^2.0",
         "beyondcode/laravel-dump-server": "^1.7",
         "brianium/paratest": "^6.2",
@@ -52,6 +51,7 @@
         "phpmd/phpmd": "^2.0",
         "phpstan/phpstan-mockery": "^0.12.11",
         "phpunit/phpunit": "^9.3.3",
+        "roave/security-advisories": "dev-latest",
         "squizlabs/php_codesniffer": "^3.0"
     },
     "autoload": {

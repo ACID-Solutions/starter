@@ -7,6 +7,7 @@
             @include('layouts.front.partials.nav')
             <div id="template" class="flex-grow-1 position-relative">
                 @yield('template')
+                @include('layouts.front.partials.cookies')
             </div>
             @include('layouts.front.partials.footer')
         </div>

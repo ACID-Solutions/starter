@@ -9,48 +9,40 @@
         @endif
     </h1>
     <hr>
-    <form method="POST"
-          action="{{ $page ? route('page.update', $page) : route('page.store') }}"
-          enctype="multipart/form-data"
-          novalidate>
-        @csrf
-        @if($page)
-            @method('PUT')
-        @endif
+    <x-form::form :method="$page ? 'PUT' : 'POST'"
+          :action="$page ? route('page.update', $page) : route('page.store')"
+          :bind="$page"
+          enctype="multipart/form-data">
         <div class="d-flex">
-            {{ buttonBack()->route('pages.index')->containerClasses(['mr-3']) }}
-            @if($page){{ submitUpdate() }}@else{{ submitCreate() }}@endif
-            @if(optional($page)->active)
-                {{ buttonLink()->route('page.show', [$page->slug])
-                    ->prepend('<i class="fas fa-external-link-square-alt fa-fw"></i>')
-                    ->label(__('Display'))
-                    ->componentClasses(['btn-success'])
-                    ->componentHtmlAttributes(['target' => '_blank'])
-                    ->containerClasses(['ml-3']) }}
+            <x-form::button.link class="btn-secondary me-3" :href="route('pages.index')">
+                <i class="fas fa-undo fa-fw"></i>
+                {{ __('Back') }}
+            </x-form::button.link>
+            <x-form::button.submit>
+                <i class="fas fa-save fa-fw"></i>
+                {{ __('Save') }}
+            </x-form::button.submit>
+            @if($page?->active)
+                <x-form::button.link class="btn-success ms-3" :href="route('page.show', $page)" target="_blank">
+                    <i class="fas fa-external-link-square-alt fa-fw"></i>
+                    {{ __('Display') }}
+                </x-form::button.link>
             @endif
         </div>
         <x-common.forms.notice class="mt-3"/>
         <div class="row mb-n3" data-masonry>
             <div class="col-xl-6 mb-3">
                 <x-admin.forms.card title="{{ __('Navigation') }}">
-                    {{ inputText()->name('nav_title')
-                        // Todo: remove the line below if your app is not multilingual.
-                        ->locales(supportedLocaleKeys())
-                        ->model($page)
-                        ->componentHtmlAttributes(['required']) }}
-                    @if(! $page)
-                        {{ inputText()->name('unique_key')
-                            ->model($page)
-                            ->prepend('<i class="fas fa-key fa-fw"></i>')
-                            ->componentHtmlAttributes(['required', 'data-snakecase', 'data-autofill-from' => '#text-nav-title']) }}
-                    @endif
-                    {{ inputText()->name('slug')
-                        // Todo: remove the line below if your app is not multilingual.
-                        ->locales(supportedLocaleKeys())
-                        ->model($page)
-                        // ToDo: remove localization if your app is not multilingual
-                        ->prepend(fn(string $locale) => route('page.show', '', false, $locale) . '/')
-                        ->componentHtmlAttributes(['required', 'data-kebabcase', 'data-autofill-from' => '#text-nav-title']) }}
+                    <x-form::input name="nav_title" :locales="supportedLocaleKeys()" required/>
+                    @unless($page)
+                        <x-form::input name="unique_key" data-autofill-from="#text-nav-title" data-snakecase required/>
+                    @endunless
+                    <x-form::input name="slug"
+                                   :locales="supportedLocaleKeys()"
+                                   :prepend="fn(string $locale) => route('page.show', '', false, $locale) . '/'"
+                                   data-autofill-from="#text-nav-title"
+                                   data-kebabcase
+                                   required/>
                 </x-admin.forms.card>
             </div>
             <div class="col-xl-6 mb-3">
@@ -58,11 +50,11 @@
             </div>
             <div class="col-xl-6 mb-3">
                 <x-admin.forms.card title="{{ __('Publication') }}">
-                    {{ inputSwitch()->name('active')->model($page) }}
+                    <x-form::toggle-switch name="active"/>
                 </x-admin.forms.card>
             </div>
         </div>
-    </form>
+    </x-form::form>
     <hr>
     @if($page)
         {!! $page->displayAdminPanel() !!}

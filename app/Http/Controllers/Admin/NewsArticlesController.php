@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\News\NewsArticlesIndexRequest;
 use App\Http\Requests\News\NewsArticleStoreRequest;
 use App\Http\Requests\News\NewsArticleUpdateRequest;
 use App\Models\News\NewsArticle;
@@ -14,18 +15,20 @@ use Illuminate\Http\RedirectResponse;
 class NewsArticlesController extends Controller
 {
     /**
+     * @param \App\Http\Requests\News\NewsArticlesIndexRequest $request
+     *
      * @return \Illuminate\Contracts\View\View
      * @throws \ErrorException
      */
-    public function index(): View
+    public function index(NewsArticlesIndexRequest $request): View
     {
         SEOTools::setTitle(__('breadcrumbs.parent.index', [
             'parent' => __('News'),
             'entity' => __('Articles'),
         ]));
-        $table = (new NewsArticlesTable())->setup();
+        $table = app(NewsArticlesTable::class, compact('request'))->setup();
 
-        return view('templates.admin.news.articles.index', compact('table'));
+        return view('templates.admin.news.articles.index', compact('request', 'table'));
     }
 
     public function create(): View

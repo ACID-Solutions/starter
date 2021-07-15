@@ -12,13 +12,13 @@ class NewsCategory extends Model
     use HasFactory;
     use HasTranslations;
 
-    public array $translatable = ['name'];
+    public array $translatable = ['title'];
 
     /** @var string*/
     protected $table = 'news_categories';
 
     /** @var array */
-    protected $fillable = ['name'];
+    protected $fillable = ['title'];
 
     public function articles(): BelongsToMany
     {

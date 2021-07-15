@@ -6,34 +6,25 @@
     </h1>
     <hr>
     <x-admin.forms.card title="{{ __('List') }}">
-        <form class="d-flex justify-content-end m-0"
-              action="{{ route('libraryMedia.files.index') }}"
-              novalidate>
+        <x-form::form class="d-flex justify-content-end" :action="route('libraryMedia.files.index')" :bind="$request">
             @foreach($request->except('category_id') as $name => $value)
                 <input type="hidden" name="{{ $name }}" value="{{ $value }}">
             @endforeach
-            {{ select()->name('category_id')
-                ->prepend('<i class="fas fa-tags fa-fw"></i>')
-                ->label(false)
-                ->disablePlaceholder()
-                ->options(App\Models\LibraryMedia\LibraryMediaCategory::get()
-                    ->map(fn(App\Models\LibraryMedia\LibraryMediaCategory $libraryMediaCategory) => [
-                        'id' => $libraryMediaCategory->id,
-                        'title' => $libraryMediaCategory->title
-                    ])
-                    ->sortBy('title'), 'id', 'title')
-                ->selectOptions('id', (int) $request->category_id)
-                ->containerClasses([]) }}
-            {{ submitValidate()->prepend('<i class="fas fa-filter"></i>')
-                ->label(__('Filter'))
-                ->containerClasses(['ml-3']) }}
-            @if($request->has('category_id'))
-                {{ buttonBack()->route('libraryMedia.files.index')
-                    ->prepend('<i class="fas fa-undo"></i>')
-                    ->label(__('Reset'))
-                    ->containerClasses(['ml-3']) }}
+            <x-form::select class="mb-n3"
+                            name="category_id"
+                            hideLabel
+                            :options="App\Models\LibraryMedia\LibraryMediaCategory::pluck('title', 'id')->sortBy('title')->toArray()"/>
+            <x-form::button.submit class="btn-primary ms-3">
+                <i class="fas fa-filter fa-fw"></i>
+                {{ __('Filter') }}
+            </x-form::button.submit>
+            @if($request->has(['category_id']))
+                <x-form::button.link class="btn-secondary ms-3" :href="route('libraryMedia.files.index')">
+                    <i class="fas fa-undo fa-fw"></i>
+                    {{ __('Reset') }}
+                </x-form::button.link>
             @endif
-        </form>
+        </x-form::form>
         {{ $table }}
     </x-admin.forms.card>
 @endsection

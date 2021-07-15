@@ -10,7 +10,7 @@
             {{ __('Cookie categories are gathering cookie services with similar purpose in order to allow users to easily identify them.') }}<br>
             {{ __('Only non-empty categories will be displayed on the user consent pop-in.') }}
         </p>
-        @include('components.admin.table.drag-and-drop')
+        <x-admin.table.drag-and-drop/>
         <div data-sortable
              data-draggable-container="#cookie-categories-table tbody"
              data-draggable-items="tr"

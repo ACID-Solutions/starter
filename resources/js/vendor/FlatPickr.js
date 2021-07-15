@@ -29,7 +29,7 @@ export default class FlatPickr {
             altFormat,
             enableTime: true,
             dateFormat: 'Z',
-            time_24hr,
+            time_24hr
         });
     }
 

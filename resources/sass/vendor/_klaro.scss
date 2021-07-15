@@ -5,7 +5,11 @@
     .cookie-notice {
 
         .cm-btn {
-            @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-line-height-sm, $btn-border-radius-sm);
+            @extend .btn-sm;
         }
     }
+}
+
+#change-cookie-preferences {
+    right: unset;
 }

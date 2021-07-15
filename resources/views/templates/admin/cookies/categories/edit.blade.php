@@ -9,35 +9,28 @@
         @endif
     </h1>
     <hr>
-    <form method="POST"
-          action="{{ $cookieCategory ? route('cookie.category.update', $cookieCategory) : route('cookie.category.store') }}"
-          novalidate>
-        @csrf
-        @if($cookieCategory)
-            @method('PUT')
-        @endif
+    <x-form::form :method="$cookieCategory ? 'PUT' : 'POST'"
+          :action="$cookieCategory ? route('cookie.category.update', $cookieCategory) : route('cookie.category.store')"
+          :bind="$cookieCategory">
         <div class="d-flex">
-            {{ buttonBack()->route('cookie.categories.index')->containerClasses(['mr-3']) }}
-            @if($cookieCategory){{ submitUpdate() }}@else{{ submitCreate() }}@endif
+            <x-form::button.link class="btn-secondary me-3" :href="route('cookie.categories.index')">
+                <i class="fas fa-undo fa-fw"></i>
+                {{ __('Back') }}
+            </x-form::button.link>
+            <x-form::button.submit>
+                <i class="fas fa-save fa-fw"></i>
+                {{ __('Save') }}
+            </x-form::button.submit>
         </div>
         <x-common.forms.notice class="mt-3"/>
         <div class="row mb-n3" data-masonry>
             <div class="col-xl-6 mb-3">
                 <x-admin.forms.card title="{{ __('Information') }}">
-                    {{ inputText()->name('unique_key')
-                        ->model($cookieCategory)
-                        ->componentHtmlAttributes(['required', 'data-snakecase']) }}
-                    {{ inputText()->name('title')
-                        // Todo: remove the line below if your app is not multilingual.
-                        ->locales(supportedLocaleKeys())
-                        ->model($cookieCategory)
-                        ->componentHtmlAttributes(['required']) }}
-                    {{ inputText()->name('description')
-                        // Todo: remove the line below if your app is not multilingual.
-                        ->locales(supportedLocaleKeys())
-                        ->model($cookieCategory) }}
+                    <x-form::input name="unique_key" data-snakecase required/>
+                    <x-form::input name="title" :locales="supportedLocaleKeys()" required/>
+                    <x-form::textarea name="description" :locales="supportedLocaleKeys()"/>
                 </x-admin.forms.card>
             </div>
         </div>
-    </form>
+    </x-form::form>
 @endsection

@@ -27,61 +27,42 @@
                 <p>
                     {{ __('Update your account\'s profile and contact information.') }}
                 </p>
-                <form method="POST"
-                      action="{{ route('user-profile-information.update') }}"
-                      enctype="multipart/form-data"
-                      novalidate>
-                    @csrf
-                    @method('PUT')
-                    @php($profilePicture = optional($user)->getFirstMedia('profile_pictures'))
-                    {{ inputFile()->name('profile_picture')
-                        ->value(optional($profilePicture)->file_name)
-                        ->uploadedFile(fn() => view('components.admin.media.thumb', ['image' => $profilePicture]))
-                        ->caption(app(App\Models\Users\User::class)->getMediaCaption('profile_pictures'))
-                        ->errorBag('updateProfileInformation') }}
-                    {{ inputText()->name('last_name')
-                        ->model($user)
-                        ->componentHtmlAttributes(['required', 'autocomplete' => 'family-name'])
-                        ->errorBag('updateProfileInformation') }}
-                    {{ inputText()->name('first_name')
-                        ->model($user)
-                        ->componentHtmlAttributes(['required', 'autocomplete' => 'given-name'])
-                        ->errorBag('updateProfileInformation') }}
-                    {{ inputTel()->name('phone_number')
-                        ->model($user)
-                        ->componentHtmlAttributes(['autocomplete' => 'tel'])
-                        ->errorBag('updateProfileInformation') }}
-                    {{ inputEmail()->name('email')
-                        ->model($user)
-                        ->componentHtmlAttributes(['required', 'autocomplete' => 'email'])
-                        ->errorBag('updateProfileInformation') }}
-                    @if($user){{ submitUpdate() }}@else{{ submitCreate() }}@endif
-                </form>
+                <x-form::form method="PUT"
+                              :action="route('user-profile-information.update')"
+                              :bind="$user"
+                              errorBag="updateProfileInformation"
+                              enctype="multipart/form-data">
+                    <x-admin.media.thumb :media="$user?->getFirstMedia('profile_pictures')"/>
+                    {{-- {{ inputCheckbox()->name('remove_meta_image') }}--}}
+                    <x-form::input type="file"
+                                   name="profile_picture"
+                                   :caption="app(App\Models\Users\User::class)->getMediaCaption('profile_pictures')"/>
+                    <x-form::input name="last_name" autocomplete="family-name" required/>
+                    <x-form::input name="first_name" autocomplete="given-name" required/>
+                    <x-form::input type="tel" name="phone_number" autocomplete="tel"/>
+                    <x-form::input type="email" name="email" autocomplete="email" required/>
+                    <x-form::button.submit>
+                        <i class="fas fa-save fa-fw"></i>
+                        {{ __('Save') }}
+                    </x-form::button.submit>
+                </x-form::form>
             </x-admin.forms.card>
         </div>
         @if(Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
             <div class="col-xl-6 mb-3">
-                <x-admin.forms.card title="{{ __('Update Password') }}">
+                <x-admin.forms.card title="{{ __('Update Password') }}" errorBag="updatePassword">
                     <p>
                         {{ __('Ensure your account is using a long, random password to stay secure.') }}
                     </p>
-                    <form method="POST"
-                          action="{{ route('user-password.update') }}"
-                          novalidate>
-                        @csrf
-                        @method('PUT')
-                        {{ inputPassword()->name('current_password')
-                            ->componentHtmlAttributes(['required', 'autocomplete' => 'current-password'])
-                            ->errorBag('updatePassword') }}
-                        {{ inputPassword()->name('new_password')
-                            ->componentHtmlAttributes(['required', 'autocomplete' => 'new-password'])
-                            ->containerHtmlAttributes(['data-password-strength-meter'])
-                            ->errorBag('updatePassword') }}
-                        {{ inputPassword()->name('new_password_confirmation')
-                            ->componentHtmlAttributes(['required', 'autocomplete' => 'new-password'])
-                            ->errorBag('updatePassword') }}
-                        {{ submitUpdate() }}
-                    </form>
+                    <x-form::form method="PUT" :action="route('user-password.update')">
+                        <x-form::input type="password" name="current_password" autocomplete="current-password" required/>
+                        <x-form::input type="password" name="new_password" autocomplete="new-password" data-password-strength-meter required/>
+                        <x-form::input type="password" name="new_password_confirmation" autocomplete="new-password" required/>
+                        <x-form::button.submit>
+                            <i class="fas fa-save fa-fw"></i>
+                            {{ __('Save') }}
+                        </x-form::button.submit>
+                    </x-form::form>
                 </x-admin.forms.card>
             </div>
         @endif
@@ -119,37 +100,26 @@
                             <pre class="bg-light p-3 small">@foreach ($user->recoveryCodes() as $code)<div>{{ $code }}</div>@endforeach</pre>
                         </div>
                         <div class="d-flex mt-3">
-                            <form method="POST"
-                                  action="{{ route('two-factor.recovery-codes') }}"
-                                  novalidate>
-                                @csrf
-                                {{ submit()->prepend('<i class="fas fa-redo fa-fw"></i>')
-                                    ->label(__('Regenerate Recovery Codes'))
-                                    ->componentClasses(['btn-secondary'])
-                                    ->componentHtmlAttributes(['data-confirm' => __('Are you sure you want to regenerate recovery codes?')]) }}
-                            </form>
-                            <form class="ml-3"
-                                  method="POST"
-                                  action="{{ route('two-factor.disable') }}"
-                                  novalidate>
-                                @csrf
-                                @method('DELETE')
-                                {{ submit()->prepend('<i class="fas fa-ban fa-fw"></i>')
-                                    ->label(__('Disable'))
-                                    ->componentClasses(['btn-danger'])
-                                    ->componentHtmlAttributes(['data-confirm' => __('Are you sure you want to disable two factor authentication?')]) }}
-                            </form>
+                            <x-form::form method="POST" :action="route('two-factor.recovery-codes')">
+                                <x-form::button.submit class="btn-secondary" data-confirm="{{ __('Are you sure you want to regenerate recovery codes?') }}">
+                                    <i class="fas fa-redo fa-fw"></i>
+                                    {{ __('Regenerate Recovery Codes') }}
+                                </x-form::button.submit>
+                            </x-form::form>
+                            <x-form::form class="ms-3" method="DELETE" :action="route('two-factor.disable')">
+                                <x-form::button.submit class="btn-danger" data-confirm="{{ __('Are you sure you want to disable two factor authentication?') }}">
+                                    <i class="fas fa-ban fa-fw"></i>
+                                    {{ __('Disable') }}
+                                </x-form::button.submit>
+                            </x-form::form>
                         </div>
                     @else
-                        <form method="POST"
-                              action="{{ route('two-factor.enable') }}"
-                              novalidate>
-                            @csrf
-                            {{ submit()->prepend('<i class="fas fa-check fa-fw"></i>')
-                                ->label(__('Enable'))
-                                ->componentClasses(['btn-success'])
-                                ->componentHtmlAttributes(['data-confirm' => __('Are you sure you want to enable two factor authentication?')]) }}
-                        </form>
+                        <x-form::form method="POST" :action="route('two-factor.enable')">
+                            <x-form::button.submit class="btn-success" data-confirm="{{ __('Are you sure you want to enable two factor authentication?') }}">
+                                <i class="fas fa-check fa-fw"></i>
+                                {{ __('Enable') }}
+                            </x-form::button.submit>
+                        </x-form::form>
                     @endif
                 </x-admin.forms.card>
             </div>
@@ -163,18 +133,13 @@
                 <p>
                     {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
                 </p>
-                <form method="POST"
-                      action="{{ route('profile.deleteAccount') }}"
-                      novalidate>
-                    @csrf
-                    {{ inputPassword()->name('password')
-                        ->componentHtmlAttributes(['required', 'autocomplete' => 'current-password'])
-                        ->errorBag('deleteAccount') }}
-                    {{ submit()->prepend('<i class="fas fa-trash fa-fw"></i>')
-                        ->label(__('Delete Account'))
-                        ->componentClasses(['btn-danger'])
-                        ->componentHtmlAttributes(['data-confirm' => __('Are you sure you want to delete your account?')]) }}
-                </form>
+                <x-form::form method="POST" :action="route('profile.deleteAccount')" errorBag="deleteAccount">
+                    <x-form::input type="password" name="password" autocomplete="current-password" required/>
+                    <x-form::button.submit class="btn-danger" data-confirm="{{ __('Are you sure you want to delete your account?') }}">
+                        <i class="fas fa-trash fa-fw"></i>
+                        {{ __('Delete Account') }}
+                    </x-form::button.submit>
+                </x-form::form>
             </x-admin.forms.card>
         </div>
     </div>

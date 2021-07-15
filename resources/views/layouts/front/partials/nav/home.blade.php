@@ -1,6 +1,6 @@
-{{-- ToDo: replace `currentRouteIs` by `Route::is` if your app is not multilingual --}}
-<li class="nav-item{{ currentRouteIs('home.page.show') ? ' active' : null }}">
-    <a class="nav-link"
+<li class="nav-item">
+    {{-- ToDo: replace `currentUrlIs($url)` by `Request::url() === $url` if your app is not multilingual --}}
+    <a class="nav-link{{ currentRouteIs('home.page.show') ? ' active' : null }}"
        href="{{ route('home.page.show') }}"
        title="{{ __('Home') }}">
         {{ __('Home') }}

@@ -16,34 +16,25 @@
             {{ __('You will also find all the necessary information about GDPR law on this resource:') }}
             <a href="https://gdpr.eu" title="GDPR" target="_blank" rel="noopener">https://gdpr.eu</a>.
         </p>
-        <form class="d-flex justify-content-end m-0"
-              action="{{ route('cookie.services.index') }}"
-              novalidate>
+        <x-form::form class="d-flex justify-content-end" :action="route('cookie.services.index')" :bind="$request">
             @foreach($request->except('category_id') as $name => $value)
                 <input type="hidden" name="{{ $name }}" value="{{ $value }}">
             @endforeach
-            {{ select()->name('category_id')
-                ->prepend('<i class="fas fa-tags fa-fw"></i>')
-                ->label(false)
-                ->disablePlaceholder()
-                ->options(App\Models\Cookies\CookieCategory::get()
-                    ->map(fn(App\Models\Cookies\CookieCategory $cookieCategory) => [
-                        'id' => $cookieCategory->id,
-                        'name' => $cookieCategory->title
-                    ])
-                    ->sortBy('title'), 'id', 'name')
-                ->selectOptions('id', (int) $request->category_id)
-                ->containerClasses([]) }}
-            {{ submitValidate()->prepend('<i class="fas fa-filter"></i>')
-                ->label(__('Filter'))
-                ->containerClasses(['ml-3']) }}
-            @if($request->has('category_id'))
-                {{ buttonBack()->route('cookie.services.index')
-                    ->prepend('<i class="fas fa-undo"></i>')
-                    ->label(__('Reset'))
-                    ->containerClasses(['ml-3']) }}
+            <x-form::select class="mb-n3"
+                            name="category_id"
+                            hideLabel
+                            :options="App\Models\Cookies\CookieCategory::pluck('title', 'id')->sortBy('title')->toArray()"/>
+            <x-form::button.submit class="btn-primary ms-3">
+                <i class="fas fa-filter fa-fw"></i>
+                {{ __('Filter') }}
+            </x-form::button.submit>
+            @if($request->has(['category_id']))
+                <x-form::button.link class="btn-secondary ms-3" :href="route('cookie.services.index')">
+                    <i class="fas fa-undo fa-fw"></i>
+                    {{ __('Reset') }}
+                </x-form::button.link>
             @endif
-        </form>
+        </x-form::form>
         {{ $table }}
     </x-admin.forms.card>
 @endsection

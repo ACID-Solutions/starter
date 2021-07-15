@@ -105,9 +105,9 @@ class NewsArticle extends Model implements HasMedia, Feedable
             ->authorName(config('app.name'))
             ->authorEmail(settings()->email)
             ->category($this->categories->pluck('name'))
-            ->enclosure(optional($media)->getUrl())
-            ->enclosureType(optional($media)->mime_type)
-            ->enclosureLength(optional($media)->size)
+            ->enclosure($media?->getUrl())
+            ->enclosureType($media?->mime_type)
+            ->enclosureLength($media?->size)
             ->updated($this->updated_at);
     }
 }

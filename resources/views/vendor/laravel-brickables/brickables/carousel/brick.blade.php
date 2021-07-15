@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row">
     @endunless
-    <div id="{{ $carouselId }}" class="carousel slide bg-dark w-100" data-ride="carousel">
+    <div id="{{ $carouselId }}" class="carousel slide bg-dark w-100" data-bs-ride="carousel">
         <div class="carousel-inner">
             @foreach($slides as $key => $slide)
                 <div class="carousel-item{{ $loop->first ? ' active' : null }}">
@@ -32,21 +32,19 @@
             @endforeach
         </div>
         @if($slides->count() > 1)
-            <ol class="carousel-indicators">
+            <div class="carousel-indicators">
                 @foreach($slides as $key => $slide)
-                    <li data-target="#{{ $carouselId }}"
-                        data-slide-to="{{ $key }}"
-                        class="{{ $loop->first ? 'active' : null }}"></li>
+                    <button class="{{ $loop->first ? 'active' : null }}" type="button" data-bs-target="#{{ $carouselId }}" data-bs-slide-to="{{ $key }}" aria-current="{{ $loop->first ? 'true' : 'false' }}" aria-label="Slide {{ $key }}"></button>
                 @endforeach
-            </ol>
-            <a class="carousel-control-prev" href="#{{ $carouselId }}" role="button" data-slide="prev">
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#{{ $carouselId }}" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">{{ __('Previous') }}</span>
-            </a>
-            <a class="carousel-control-next" href="#{{ $carouselId }}" role="button" data-slide="next">
+                <span class="visually-hidden">{{ __('Previous') }}</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#{{ $carouselId }}" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">{{ __('Next') }}</span>
-            </a>
+                <span class="visually-hidden">{{ __('Next') }}</span>
+            </button>
         @endif
     </div>
     @unless($fullWidth)

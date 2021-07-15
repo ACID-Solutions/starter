@@ -10,8 +10,8 @@ module.exports = {
         'sourceType': 'module'
     },
     'globals': {
-        'Swal': true,
         'app': true,
+        'Swal': true,
         '$': true
     },
     'rules': {

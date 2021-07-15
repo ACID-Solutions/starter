@@ -7,8 +7,6 @@ use App\Models\Cookies\CookieService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-// Todo: update this factory if your app is not multilingual.
-
 class CookieServiceFactory extends Factory
 {
     /** @var string */

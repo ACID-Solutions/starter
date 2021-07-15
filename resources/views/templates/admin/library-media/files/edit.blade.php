@@ -9,45 +9,43 @@
         @endif
     </h1>
     <hr>
-    <form action="{{ $file ? route('libraryMedia.file.update', $file) : route('libraryMedia.file.store') }}"
-          method="POST"
-          enctype="multipart/form-data"
-          novalidate>
-        @csrf
-        @if($file)
-            @method('PUT')
-        @endif
+    <x-form::form :method="$file ? 'PUT' : 'POST'"
+                  :action="$file ? route('libraryMedia.file.update', $file) : route('libraryMedia.file.store')"
+                  :bind="$file"
+                  enctype="multipart/form-data">
         <div class="d-flex">
-            {{ buttonBack()->route('libraryMedia.files.index')->containerClasses(['mr-3']) }}
-            @if($file){{ submitUpdate() }}@else{{ submitCreate() }}@endif
+            <x-form::button.link class="btn-secondary me-3" :href="route('libraryMedia.files.index')">
+                <i class="fas fa-undo fa-fw"></i>
+                {{ __('Back') }}
+            </x-form::button.link>
+            <x-form::button.submit>
+                <i class="fas fa-save fa-fw"></i>
+                {{ __('Save') }}
+            </x-form::button.submit>
         </div>
         <x-common.forms.notice class="mt-3"/>
         <div class="row mb-n3" data-masonry>
             <div class="col-xl-6 mb-3">
                 <x-admin.forms.card title="{{ __('File') }}">
-                    {{ inputFile()->name('media')
-                        ->value(optional(optional($file)->getFirstMedia('media'))->file_name)
-                        ->uploadedFile(fn() => trim(view('components.admin.library-media.thumb', ['file' => $file])))
-                        ->showRemoveCheckbox(false)
-                        ->componentHtmlAttributes(['required'])
-                        ->caption((new App\Models\LibraryMedia\LibraryMediaFile)->getMediaCaption('media')) }}
-                    {{ inputText()->name('name')
-                        // Todo: remove the line below if your app is not multilingual.
-                        ->locales(supportedLocaleKeys())
-                        ->model($file)
-                        ->componentHtmlAttributes(['required']) }}
-                    {{ select()->name('category_id')
-                        ->model($file)
-                        ->options((new App\Models\LibraryMedia\LibraryMediaCategory)->orderBy('name')->get()->map(fn(App\Models\LibraryMedia\LibraryMediaCategory $libraryMediaCategory) => ['id' => $category->id, 'name' => $category->name]), 'id', 'name')
-                        ->componentHtmlAttributes(['required']) }}
+                    <x-admin.library-media.thumb class="mb-2" :file="$file"/>
+                    <x-form::input type="file"
+                                   name="media"
+                                   :caption="app(App\Models\LibraryMedia\LibraryMediaFile::class)->getMediaCaption('media')"
+                                   required/>
+                    <x-form::input name="name" :locales="supportedLocaleKeys()" required/>
+                    <x-form::select name="category_id"
+                                    :options="App\Models\LibraryMedia\LibraryMediaCategory::pluck('title', 'id')->sortBy('title')->toArray()"
+                                    required/>
                 </x-admin.forms.card>
             </div>
             @if($file)
-                <x-admin.forms.card title="{{ __('Clipboard copy') }}">
-                    <p>{{ __('Click on buttons below to copy the related content to your clipboard.') }}</p>
-                    @include('components.admin.library-media.clipboard-copy.buttons')
-                </x-admin.forms.card>
+                <div class="col-xl-6 mb-3">
+                    <x-admin.forms.card title="{{ __('Clipboard copy') }}">
+                        <p>{{ __('Click on buttons below to copy the related content to your clipboard.') }}</p>
+                        <x-admin.library-media.clipboard-copy.buttons :file="$file"/>
+                    </x-admin.forms.card>
+                </div>
             @endif
         </div>
-    </form>
+    </x-form::form>
 @endsection

@@ -7,9 +7,9 @@
 @section('content')
     {{-- Todo: remove this component call if your app is not multilingual --}}
     @include('components.common.multilingual.lang-switcher', [
-        'containerClasses' => ['text-right', 'mb-3'],
+        'containerClasses' => ['text-end', 'mb-3'],
         'dropdownLabelClasses' => ['btn', 'btn-link'],
-        'dropdownMenuClasses' => ['dropdown-menu-right']
+        'dropdownMenuClasses' => ['dropdown-menu-end']
     ])
     <div class="mx-auto mb-4">
         {{ settings()->getFirstMedia('logo_squared')->img('auth', ['alt' => config('app.name')]) }}
@@ -26,21 +26,19 @@
             {{ __('Please confirm access to your account by entering the authentication code provided by your authenticator application.') }}
         @endif
     </p>
-    <form method="POST" novalidate>
-        @csrf
+    <x-form::form method="POST">
         @if(request()->recovery)
-            {{ inputText()->prepend('<i class="fas fa-code"></i>')
-                ->name('recovery_code')
-                ->componentHtmlAttributes(['required', 'autofocus', 'autocomplete' => 'one-time-code']) }}
+            <x-form::input name="last_name" autofocus autocomplete="one-time-code" required/>
         @else
-            {{ inputText()->prepend('<i class="fas fa-code"></i>')
-                ->name('code')
-                ->componentHtmlAttributes(['required', 'autofocus', 'autocomplete' => 'one-time-code']) }}
+            <x-form::input name="code" autofocus autocomplete="one-time-code" required/>
         @endif
-        {{ submit()->prepend('<i class="fas fa-sign-in-alt fa-fw"></i>')
-            ->label(__('Log in'))
-            ->componentClasses(['btn-block', 'btn-primary', 'form-group']) }}
-        <div class="d-flex form-group">
+        <div class="d-grid mb-3">
+            <x-form::button.submit>
+                <i class="fas fa-sign-in-alt fa-fw"></i>
+                {{ __('Log in') }}
+            </x-form::button.submit>
+        </div>
+        <div class="d-flex mb-3">
             @if(request()->recovery)
                 <a href="{{ route(Request::route()->getName()) }}" title="{{ __('Use an authentication code') }}">
                     <i class="fas fa-exchange-alt fa-fw"></i>
@@ -53,6 +51,9 @@
                 </a>
             @endif
         </div>
-        {{ buttonBack()->route('home.page.show') }}
-    </form>
+        <x-form::button.link :href="route('home.page.show')">
+            <i class="fas fa-undo fa-fw"></i>
+            {{ __('Back') }}
+        </x-form::button.link>
+    </x-form::form>
 @endsection

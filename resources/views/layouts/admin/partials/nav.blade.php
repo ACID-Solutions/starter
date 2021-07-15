@@ -1,11 +1,11 @@
 <nav id="navbar" class="navbar navbar-expand-xl navbar-dark bg-dark w-100">
-    <a class="navbar-brand d-flex align-items-center pl-3 pr-3" href="{{ route('admin.index') }}">
+    <a class="navbar-brand d-flex align-items-center ps-3 pe-3" href="{{ route('admin.index') }}">
         {{ settings()->getFirstMedia('logo_squared')->img('nav_admin', ['alt' => config('app.name')]) }}
-        <span class="pl-2">{{ config('app.name') }}</span>
+        <span class="ps-2">{{ config('app.name') }}</span>
     </a>
-    <button class="navbar-toggler navbar-toggler-right collapsed"
+    <button class="navbar-toggler navbar-toggler-end collapsed"
             type="button"
-            data-toggle="collapse"
+            data-bs-toggle="collapse"
             data-target="#sidenav"
             aria-controls="sidenav"
             aria-expanded="false"

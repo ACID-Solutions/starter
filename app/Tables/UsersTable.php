@@ -3,6 +3,7 @@
 namespace App\Tables;
 
 use App\Models\Users\User;
+use App\View\Components\Admin\Media\Thumb;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Okipa\LaravelTable\Abstracts\AbstractTable;
@@ -45,8 +46,8 @@ class UsersTable extends AbstractTable
     protected function columns(Table $table): void
     {
         $table->column('id')->sortable();
-        $table->column('thumb')->html(fn(User $user) => view('components.admin.media.thumb', [
-            'image' => $user->getFirstMedia('profile_pictures'),
+        $table->column('thumb')->html(fn(User $user) => app(Thumb::class)->render()->with([
+            'media' => $user->getFirstMedia('profile_pictures'),
         ]));
         $table->column('first_name')->stringLimit(25)->sortable()->searchable();
         $table->column('last_name')->stringLimit(25)->sortable()->searchable();

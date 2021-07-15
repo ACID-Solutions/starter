@@ -2,11 +2,13 @@
 @import '~easymde/dist/easymde.min.css';
 
 textarea.is-invalid + .EasyMDEContainer .CodeMirror {
-    border-color: $danger;
+    @extend .form-control;
+    @extend .is-invalid;
 }
 
 textarea.is-valid + .EasyMDEContainer .CodeMirror {
-    border-color: $success;
+    @extend .form-control;
+    @extend .is-valid;
 }
 
 .editor-toolbar {
@@ -19,10 +21,10 @@ textarea.is-valid + .EasyMDEContainer .CodeMirror {
 }
 
 .editor-statusbar {
-    @extend .pl-0;
-    @extend .pr-0;
+    @extend .ps-0;
+    @extend .pe-0;
 
     .lines {
-        @extend .ml-0;
+        @extend .ms-0;
     }
 }

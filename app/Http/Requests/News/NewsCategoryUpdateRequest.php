@@ -11,7 +11,7 @@ class NewsCategoryUpdateRequest extends FormRequest
     public function rules(): array
     {
         return localizeRules([
-            'name' => [
+            'title' => [
                 'required',
                 'string',
                 'max:255',

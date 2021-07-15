@@ -3,6 +3,6 @@
     @include('components.common.multilingual.lang-switcher', [
         'dropdownLabelIconClasses' => ['text-success'],
         'dropdownLabelClasses' => ['nav-link'],
-        'dropdownMenuClasses' => ['dropdown-menu-right'],
+        'dropdownMenuClasses' => ['dropdown-menu-end'],
     ])
 </li>

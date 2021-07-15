@@ -1,20 +1,18 @@
-{{-- ToDo: replace `currentRouteIs` by `Route::is` if your app is not multilingual --}}
 <li class="nav-item{{ currentRouteIs('profile.edit') ? ' active' : null }}">
     <div class="dropdown">
         <a href=""
            class="dropdown-toggle nav-link"
-           data-toggle="dropdown"
+           data-bs-toggle="dropdown"
            aria-haspopup="true"
            aria-expanded="false">
-            {{ auth()->user()->getFirstMedia('profile_pictures')->img('top-nav', ['class' => 'rounded-circle mr-1']) }}
+            {{ auth()->user()->getFirstMedia('profile_pictures')->img('top-nav', ['class' => 'rounded-circle me-1']) }}
             <span class="d-none d-xl-inline">
                 {{ auth()->user()->full_name }}
             </span>
         </a>
-        <div class="dropdown-menu dropdown-menu-right">
+        <div class="dropdown-menu dropdown-menu-end">
             @if(Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updateProfileInformation()))
                 <a href="{{ route('profile.edit') }}"
-                   {{-- ToDo: replace `currentRouteIs` by `Route::is` if your app is not multilingual --}}
                    class="dropdown-item{{ currentRouteIs('profile.edit') ? ' active' : null }}"
                    title="{{ __('Profile') }}">
                     <i class="fas fa-user-circle fa-fw"></i>
@@ -22,8 +20,7 @@
                 </a>
                 <div class="dropdown-divider"></div>
             @endif
-            <form id="logout-form" class="p-0" method="POST" action="{{ route('logout') }}" novalidate>
-                @csrf()
+            <x-form::form id="logout-form" method="POST" :action="route('logout')">
                 <button type="submit"
                         class="dropdown-item btn btn-link"
                         title="{{ __('Logout') }}"
@@ -31,7 +28,7 @@
                     <i class="fas fa-sign-out-alt fa-fw"></i>
                     {{ __('Logout') }}
                 </button>
-            </form>
+            </x-form::form>
         </div>
     </div>
 </li>

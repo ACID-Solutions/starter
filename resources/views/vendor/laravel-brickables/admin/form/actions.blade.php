@@ -1,5 +1,5 @@
 <div class="d-flex">
-    <a class="btn btn-secondary mr-2" href="{{ $adminPanelUrl }}" role="button">
+    <a class="btn btn-secondary me-2" href="{{ $adminPanelUrl }}" role="button">
         <i class="fas fa-undo fa-fw"></i> {{ __('Back') }}
     </a>
     <button class="btn btn-primary" type="submit">

@@ -1,5 +1,4 @@
 @php
-    // ToDo: replace `currentRouteIs` by `Route::is` if your app is not multilingual
     $libraryMediaCategoriesActive = currentRouteIs('libraryMedia.categories.index')
         || currentRouteIs('libraryMedia.category.create')
         || currentRouteIs('libraryMedia.category.edit');
@@ -12,7 +11,7 @@
     <a class="nav-link{{ $subMenuActive ? ' active' : null }}"
         href="#library-media-menu"
             title="{{ __('Media library') }}"
-            data-toggle="collapse"
+            data-bs-toggle="collapse"
             role="button"
             aria-expanded="false"
             aria-controls="library-media-menu">

@@ -4,6 +4,8 @@ namespace App\Tables;
 
 use App\Http\Requests\LibraryMedia\LibraryMediaFilesIndexRequest;
 use App\Models\LibraryMedia\LibraryMediaFile;
+use App\View\Components\Admin\LibraryMedia\ClipboardCopy\Buttons;
+use App\View\Components\Admin\LibraryMedia\Thumb;
 use Illuminate\Database\Eloquent\Builder;
 use Okipa\LaravelTable\Abstracts\AbstractTable;
 use Okipa\LaravelTable\Table;
@@ -52,7 +54,7 @@ class LibraryMediaFilesTable extends AbstractTable
                     '=',
                     'library_media_files.category_id'
                 );
-                $query->where('model_type', 'App\Models\LibraryMedia\LibraryMediaFile');
+                $query->where('model_type', \App\Models\LibraryMedia\LibraryMediaFile::class);
                 if ($this->request->has('category_id')) {
                     $query->where('library_media_categories.id', $this->request->category_id);
                 }
@@ -71,7 +73,7 @@ class LibraryMediaFilesTable extends AbstractTable
     {
         $table->column('id')->sortable();
         $table->column('thumb')
-            ->html(fn(LibraryMediaFile $file) => view('components.admin.library-media.thumb', compact('file')));
+            ->html(fn(LibraryMediaFile $file) => app(Thumb::class)->render()->with(compact('file')));
         $table->column('name')->stringLimit(25)->sortable()->searchable();
         $table->column('category_title')
             ->link(fn(LibraryMediaFile $file) => route('libraryMedia.files.index', [
@@ -87,10 +89,9 @@ class LibraryMediaFilesTable extends AbstractTable
                 . $file->getFirstMedia('media')->mime_type . '</a>')
             ->sortable()
             ->searchable('media');
-        $table->column()->title(__('Clipboard copy'))->html(fn(LibraryMediaFile $file) => view(
-            'components.admin.library-media.clipboard-copy.buttons',
-            compact('file')
-        ));
+        $table->column()
+            ->title(__('Clipboard copy'))
+            ->html(fn(LibraryMediaFile $file) => app(Buttons::class)->render()->with(compact('file')));
         $table->column('created_at')->dateTimeFormat('d/m/Y H:i')->sortable();
         $table->column('updated_at')->dateTimeFormat('d/m/Y H:i')->sortable(true, 'desc');
     }

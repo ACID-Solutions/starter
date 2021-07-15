@@ -1,7 +1,6 @@
 @if($url && $active)
-    {{ buttonLink()->url($url)
-        ->prepend('<i class="fas fa-external-link-square-alt fa-fw"></i>')
-        ->label(__('Display'))
-        ->componentClasses(['btn-sm', 'btn-outline-primary'])
-        ->componentHtmlAttributes(['target' => '_blank']) }}
+    <x-form::button.link class="btn-outline-primary btn-sm" :url="$url" target="_blank">
+        <i class="fas fa-external-link-square-alt fa-fw"></i>
+        {{ __('Display') }}
+    </x-form::button.link>
 @endif

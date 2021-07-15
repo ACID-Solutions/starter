@@ -1,24 +1,15 @@
 @extends('laravel-brickables::admin.form.layout')
-@section('inputs')
-    {{ textarea()->name('text_left')
-        // Todo: remove the line below if your app is not multilingual.
-        ->locales(supportedLocaleKeys())
-        ->prepend(null)
-        // ToDo: remove localization if your app is not multilingual.
-        ->value(fn($locale) => translatedData($brick, 'data.text_left', $locale))
-        ->componentHtmlAttributes(['required', 'data-editor']) }}
-    {{ textarea()->name('text_center')
-        // Todo: remove the line below if your app is not multilingual.
-        ->locales(supportedLocaleKeys())
-        ->prepend(null)
-        // ToDo: remove localization if your app is not multilingual.
-        ->value(fn($locale) => translatedData($brick, 'data.text_center', $locale))
-        ->componentHtmlAttributes(['required', 'data-editor']) }}
-    {{ textarea()->name('text_right')
-        // Todo: remove the line below if your app is not multilingual.
-        ->locales(supportedLocaleKeys())
-        ->prepend(null)
-        // ToDo: remove localization if your app is not multilingual.
-        ->value(fn($locale) => translatedData($brick, 'data.text_right', $locale))
-        ->componentHtmlAttributes(['required', 'data-editor']) }}
+@section('form_body')
+    <x-common.forms.notice class="mt-3"/>
+    <div class="row mb-n3" data-masonry>
+        @bind($brick->data)
+            <div class="col-xl-6 mb-3">
+                <x-admin.forms.card title="{{ __('Content') }}">
+                    <x-form::textarea name="text_left" :locales="supportedLocaleKeys()" data-editor required/>
+                    <x-form::textarea name="text_center" :locales="supportedLocaleKeys()" data-editor required/>
+                    <x-form::textarea name="text_right" :locales="supportedLocaleKeys()" data-editor required/>
+                </x-admin.forms.card>
+            </div>
+        @endbind
+    </div>
 @endsection

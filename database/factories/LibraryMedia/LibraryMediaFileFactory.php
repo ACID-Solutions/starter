@@ -7,8 +7,6 @@ use App\Models\LibraryMedia\LibraryMediaFile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-// Todo: update this factory if your app is not multilingual.
-
 class LibraryMediaFileFactory extends Factory
 {
     /** @var string */

@@ -1,22 +1,17 @@
-.large {
-    font-size: $font-size-lg;
-}
-
 .text {
     word-break: break-word;
 
     em {
-        @extend .font-italic;
+        font-style: italic;
     }
 
-    b,
-    strong {
-        @extend .font-weight-bold;
+    b, strong {
+        font-weight: $font-weight-bold;
     }
 
     blockquote {
         @extend .blockquote-footer;
-        @extend .font-italic;
+        font-style: italic;
         position: relative;
         padding: 0 0 0 3.5rem;
         margin-top: 1rem;

@@ -9,28 +9,26 @@
         @endif
     </h1>
     <hr>
-    <form method="POST"
-          action="{{ $category ? route('libraryMedia.category.update', $category) : route('libraryMedia.category.store') }}"
-          novalidate>
-        @csrf
-        @if($category)
-            @method('PUT')
-        @endif
+    <x-form::form :method="$category ? 'PUT' : 'POST'"
+                  :action="$category ? route('libraryMedia.category.update', $category) : route('libraryMedia.category.store')"
+                  :bind="$category">
         <div class="d-flex">
-            {{ buttonBack()->route('libraryMedia.categories.index')->containerClasses(['mr-3']) }}
-            @if($category){{ submitUpdate() }}@else{{ submitCreate() }}@endif
+            <x-form::button.link class="btn-secondary me-3" :href="route('libraryMedia.categories.index')">
+                <i class="fas fa-undo fa-fw"></i>
+                {{ __('Back') }}
+            </x-form::button.link>
+            <x-form::button.submit>
+                <i class="fas fa-save fa-fw"></i>
+                {{ __('Save') }}
+            </x-form::button.submit>
         </div>
         <x-common.forms.notice class="mt-3"/>
         <div class="row mb-n3" data-masonry>
             <div class="col-xl-6 mb-3">
                 <x-admin.forms.card title="{{ __('Information') }}">
-                    {{ inputText()->name('title')
-                        // Todo: remove the line below if your app is not multilingual.
-                        ->locales(supportedLocaleKeys())
-                        ->model($category)
-                        ->componentHtmlAttributes(['required']) }}
+                    <x-form::input name="title" :locales="supportedLocaleKeys()" required/>
                 </x-admin.forms.card>
             </div>
         </div>
-    </form>
+    </x-form::form>
 @endsection

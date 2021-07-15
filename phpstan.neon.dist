@@ -26,7 +26,7 @@ parameters:
         - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Collection|Illuminate\\Database\\Eloquent\\Model#'
         - '#Parameter \#1 \$value of static method Illuminate\\Support\\Str::limit\(\) expects string, array given#'
         - '#Property App\\Models\\Cookies\\CookieCategory::\$title \(array\) does not accept string#'
-        - '#Property App\\Models\\News\\NewsCategory::\$name \(array\) does not accept string#'
+        - '#Property App\\Models\\News\\NewsCategory::\$title \(array\) does not accept string#'
 
     excludePaths:
         - ./*/*/FileToBeExcluded.php

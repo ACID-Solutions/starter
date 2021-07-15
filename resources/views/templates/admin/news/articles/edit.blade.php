@@ -1,6 +1,6 @@
 @extends('layouts.admin.full')
 @section('template')
-    <h1>
+    <h1 xmlns:x-form="http://www.w3.org/1999/html">
         <i class="fas fa-paper-plane fa-fw"></i>
         @if($article)
             {{ __('breadcrumbs.parent.edit', ['entity' => __('Articles'), 'detail' => $article->title, 'parent' => __('News')]) }}
@@ -9,72 +9,55 @@
         @endif
     </h1>
     <hr>
-    <form method="POST"
-          action="{{ $article ? route('news.article.update', $article) : route('news.article.store') }}"
-          enctype="multipart/form-data"
-          novalidate>
-        @csrf
-        @if($article)
-            @method('PUT')
-        @endif
+    <x-form::form :method="$article ? 'PUT' : 'POST'"
+          :action="$article ? route('news.article.update', $article) : route('news.article.store')"
+          :bind="$article"
+          enctype="multipart/form-data">
         <div class="d-flex">
-            {{ buttonBack()->route('news.articles.index')->containerClasses(['mr-3']) }}
-            @if($article){{ submitUpdate() }}@else{{ submitCreate() }}@endif
-            @if(optional($article)->active)
-                {{ buttonLink()->route('news.article.show', [$article])
-                    ->prepend('<i class="fas fa-external-link-square-alt fa-fw"></i>')
-                    ->label(__('Display'))
-                    ->componentClasses(['btn-success'])
-                    ->componentHtmlAttributes(['target' => '_blank'])
-                    ->containerClasses(['ml-3']) }}
+            <x-form::button.link class="btn-secondary me-3" :href="route('news.articles.index')">
+                <i class="fas fa-undo fa-fw"></i>
+                {{ __('Back') }}
+            </x-form::button.link>
+            <x-form::button.submit>
+                <i class="fas fa-save fa-fw"></i>
+                {{ __('Save') }}
+            </x-form::button.submit>
+            @if($article?->active)
+                <x-form::button.link class="btn-success ms-3" :href="route('news.article.show', $article)" target="_blank">
+                    <i class="fas fa-external-link-square-alt fa-fw"></i>
+                    {{ __('Display') }}
+                </x-form::button.link>
             @endif
         </div>
         <x-common.forms.notice class="mt-3"/>
         <div class="row mb-n3" data-masonry>
             <div class="col-xl-6 mb-3">
                 <x-admin.forms.card title="{{ __('Media') }}">
-                    @php($image = optional($article)->getFirstMedia('illustrations'))
-                    {{ inputFile()->name('illustration')
-                        ->value(optional($image)->file_name)
-                        ->uploadedFile(fn() => view('components.admin.media.thumb', ['image' => $image]))
-                        ->showRemoveCheckbox(false)
-                        ->componentHtmlAttributes(['required'])
-                        ->caption((new App\Models\News\NewsArticle)->getMediaCaption('illustrations')) }}
+                    <x-admin.media.thumb :media="$article?->getFirstMedia('illustrations')"/>
+                    {{-- {{ inputCheckbox()->name('remove_logo_squared') }}--}}
+                    <x-form::input type="file"
+                                   name="illustration"
+                                   :caption="app(App\Models\News\NewsArticle::class)->getMediaCaption('illustrations')"/>
                 </x-admin.forms.card>
             </div>
             <div class="col-xl-6 mb-3">
                 <x-admin.forms.card title="{{ __('Information') }}">
-                    {{ inputText()->name('title')
-                        // Todo: remove the line below if your app is not multilingual.
-                        ->locales(supportedLocaleKeys())
-                        ->model($article)
-                        ->componentHtmlAttributes(['required']) }}
-                    {{ inputText()->name('slug')
-                        // Todo: remove the line below if your app is not multilingual.
-                        ->locales(supportedLocaleKeys())
-                        ->model($article)
-                        ->prepend(fn(string $locale) => route('news.article.show', '', false, $locale) . '/')
-                        ->componentHtmlAttributes(['required', 'data-kebabcase', 'data-autofill-from' => '#text-title']) }}
-                    {{ select()->name('category_ids')
-                        ->model($article)
-                        ->prepend('<i class="fas fa-tags"></i>')
-                        ->disablePlaceholder()
-                        ->options(App\Models\News\NewsCategory::get()->map(fn(App\Models\News\NewsCategory $category) => [
-                            'id' => $category->id,
-                            'name' => $category->name
-                        ])->sortBy('name'), 'id', 'name')
-                        ->multiple()
-                        ->componentHtmlAttributes(['required']) }}
+                    <x-form::input name="title" :locales="supportedLocaleKeys()" required/>
+                    <x-form::input name="slug"
+                                   :locales="supportedLocaleKeys()"
+                                   :prepend="fn(string $locale) => route('news.article.show', '', false, $locale) . '/'"
+                                   data-autofill-from="#text-title"
+                                   data-kebabcase
+                                   required/>
+                    <x-form::select name="category_ids"
+                                    :options="App\Models\News\NewsCategory::pluck('title', 'id')->sortBy('title')->toArray()"
+                                    multiple
+                                    required/>
                 </x-admin.forms.card>
             </div>
             <div class="col-xl-6 mb-3">
                 <x-admin.forms.card title="{{ __('Content') }}">
-                    {{ textarea()->name('description')
-                        // Todo: remove the line below if your app is not multilingual.
-                        ->locales(supportedLocaleKeys())
-                        ->model($article)
-                        ->prepend(null)
-                        ->componentHtmlAttributes(['data-editor']) }}
+                    <x-form::textarea name="description" :locales="supportedLocaleKeys()" data-editor/>
                 </x-admin.forms.card>
             </div>
             <div class="col-xl-6 mb-3">
@@ -82,14 +65,15 @@
             </div>
             <div class="col-xl-6 mb-3">
                 <x-admin.forms.card title="{{ __('Publication') }}">
-                    {{ inputText()->name('published_at')
-                        ->value(optional(optional($article)->published_at)->toW3cString() ?: now()->toW3cString())
-                        ->caption(__('You can set a future publication date: this article will not be published until this date is reached.'))
-                        ->prepend('<i class="fas fa-calendar-alt"></i>')
-                        ->componentHtmlAttributes(['required', 'data-datetime-picker']) }}
-                    {{ inputSwitch()->name('active')->model($article) }}
+                    <x-form::input name="published_at"
+                                   prepend="<i class='far fa-calendar-alt'></i>"
+                                   :value="$article?->published_at->toW3cString() ?: now()->toW3cString()"
+                                   :caption="__('You can set a future publication date: this article will not be published until this date is reached.')"
+                                   data-datetime-picker
+                                   required/>
+                    <x-form::toggle-switch name="active"/>
                 </x-admin.forms.card>
             </div>
         </div>
-    </form>
+    </x-form::form>
 @endsection
